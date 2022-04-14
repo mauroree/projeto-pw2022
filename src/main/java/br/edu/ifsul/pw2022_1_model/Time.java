@@ -5,16 +5,17 @@
 package br.edu.ifsul.pw2022_1_model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
@@ -24,38 +25,36 @@ import org.hibernate.validator.constraints.Length;
  * @author 20192PF.CC0170
  */
 @Entity
-@Table(name = "cidade")
-public class Cidade implements Serializable {
+@Table(name = "time")
+public class Time implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "seq_cidade", sequenceName = "seq_cidade_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_cidade", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq_time", sequenceName = "seq_time_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_time", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @NotBlank(message = "O nome não pode ser em branco")
     @Length(max = 50, message = "O nome não pode ter mais que {max} caracteres")
     @Column(name = "nome", nullable = false, length = 50)
     private String nome;
-    
-    @NotNull(message = "O estado deve ser informado")
-    @ManyToOne
-    @JoinColumn(name = "estado", referencedColumnName = "id", nullable = false)
-    private Estado estado;
 
-    public Cidade() {
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "A data de cadastro deve ser informada")
+    @Column(name = "data_fundacao", nullable = false)
+    private Calendar dataFundacao;
+
+    @NotBlank(message = "A história não pode ser em branco")
+    @Column(name = "historia", nullable = false)
+    private String historia;
+
+    public Time() {
 
     }
 
-    /**
-     * @return the id
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Integer id) {
         this.id = id;
     }
@@ -75,23 +74,37 @@ public class Cidade implements Serializable {
     }
 
     /**
-     * @return the estado
+     * @return the dataFundacao
      */
-    public Estado getEstado() {
-        return estado;
+    public Calendar getDataFundacao() {
+        return dataFundacao;
     }
 
     /**
-     * @param estado the estado to set
+     * @param dataFundacao the dataFundacao to set
      */
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setDataFundacao(Calendar dataFundacao) {
+        this.dataFundacao = dataFundacao;
+    }
+
+    /**
+     * @return the historia
+     */
+    public String getHistoria() {
+        return historia;
+    }
+
+    /**
+     * @param historia the historia to set
+     */
+    public void setHistoria(String historia) {
+        this.historia = historia;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -106,7 +119,7 @@ public class Cidade implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cidade other = (Cidade) obj;
+        final Time other = (Time) obj;
         return Objects.equals(this.id, other.id);
     }
 
