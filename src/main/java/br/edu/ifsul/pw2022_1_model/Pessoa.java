@@ -5,31 +5,36 @@
 package br.edu.ifsul.pw2022_1_model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 /**
  *
  * @author 20192PF.CC0170
  */
 @Entity
-@Table(name = "cidade")
-public class Cidade implements Serializable {
+@Table(name = "pessoa")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Pessoa implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "seq_cidade", sequenceName = "seq_cidade_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_cidade", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq_pessoa", sequenceName = "seq_pessoa_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_pessoa", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @NotBlank(message = "O nome não pode ser em branco")
@@ -37,12 +42,18 @@ public class Cidade implements Serializable {
     @Column(name = "nome", nullable = false, length = 50)
     private String nome;
 
-    @NotNull(message = "O estado deve ser informado")
-    @ManyToOne
-    @JoinColumn(name = "estado", referencedColumnName = "id", nullable = false)
-    private Estado estado;
+    @CPF(message = "O CPF deve ser válido")
+    @NotBlank(message = "O CPF não pode ser em branco")
+    @Length(max = 14, message = "O CPF não pode ter mais que {max} caracteres")
+    @Column(name = "cpf", nullable = false, length = 14)
+    private String cpf;
 
-    public Cidade() {
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "O nascimento deve ser informado")
+    @Column(name = "nascimento", nullable = false)
+    private Calendar nascimento;
+
+    public Pessoa() {
 
     }
 
@@ -75,23 +86,37 @@ public class Cidade implements Serializable {
     }
 
     /**
-     * @return the estado
+     * @return the cpf
      */
-    public Estado getEstado() {
-        return estado;
+    public String getCpf() {
+        return cpf;
     }
 
     /**
-     * @param estado the estado to set
+     * @param cpf the cpf to set
      */
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    /**
+     * @return the nascimento
+     */
+    public Calendar getNascimento() {
+        return nascimento;
+    }
+
+    /**
+     * @param nascimento the nascimento to set
+     */
+    public void setNascimento(Calendar nascimento) {
+        this.nascimento = nascimento;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -106,7 +131,7 @@ public class Cidade implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cidade other = (Cidade) obj;
+        final Pessoa other = (Pessoa) obj;
         return Objects.equals(this.id, other.id);
     }
 

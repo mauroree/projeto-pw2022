@@ -5,13 +5,20 @@
 package br.edu.ifsul.pw2022_1_model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,22 +46,46 @@ public class Time implements Serializable {
     private String nome;
 
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "A data de cadastro deve ser informada")
+    @NotNull(message = "A data de fundação deve ser informada")
     @Column(name = "data_fundacao", nullable = false)
     private Calendar dataFundacao;
 
-    @NotBlank(message = "A história não pode ser em branco")
-    @Column(name = "historia", nullable = false)
+    @Column(name = "historia", columnDefinition = "text")
     private String historia;
+
+    @NotNull(message = "A cidade deve ser informada")
+    @ManyToOne
+    @JoinColumn(name = "cidade", referencedColumnName = "id", nullable = false)
+    private Cidade cidade;
+
+    @NotNull(message = "O usuario deve ser informado")
+    @ManyToOne
+    @JoinColumn(name = "usuario", referencedColumnName = "nome_usuario", nullable = false)
+    private Usuario usuario;
+
+    @NotNull(message = "O técnico deve ser informado")
+    @ManyToOne
+    @JoinColumn(name = "tecnico", referencedColumnName = "id", nullable = false)
+    private Pessoa tecnico;
+
+    @OneToMany(mappedBy = "time", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Jogador> jogadores = new ArrayList<>();
 
     public Time() {
 
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
@@ -101,10 +132,66 @@ public class Time implements Serializable {
         this.historia = historia;
     }
 
+    /**
+     * @return the cidade
+     */
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    /**
+     * @param cidade the cidade to set
+     */
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    /**
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    /**
+     * @return the tecnico
+     */
+    public Pessoa getTecnico() {
+        return tecnico;
+    }
+
+    /**
+     * @param tecnico the tecnico to set
+     */
+    public void setTecnico(Pessoa tecnico) {
+        this.tecnico = tecnico;
+    }
+
+    /**
+     * @return the jogadores
+     */
+    public List<Jogador> getJogadores() {
+        return jogadores;
+    }
+
+    /**
+     * @param jogadores the jogadores to set
+     */
+    public void setJogadores(List<Jogador> jogadores) {
+        this.jogadores = jogadores;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.id);
         return hash;
     }
 

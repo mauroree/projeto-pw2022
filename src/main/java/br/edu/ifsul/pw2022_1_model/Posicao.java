@@ -11,12 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -24,25 +21,19 @@ import org.hibernate.validator.constraints.Length;
  * @author 20192PF.CC0170
  */
 @Entity
-@Table(name = "cidade")
-public class Cidade implements Serializable {
+@Table(name = "posicao")
+public class Posicao implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "seq_cidade", sequenceName = "seq_cidade_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_cidade", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq_posicao", sequenceName = "seq_posicao_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_posicao", strategy = GenerationType.SEQUENCE)
     private Integer id;
-
     @NotBlank(message = "O nome não pode ser em branco")
     @Length(max = 50, message = "O nome não pode ter mais que {max} caracteres")
     @Column(name = "nome", nullable = false, length = 50)
     private String nome;
 
-    @NotNull(message = "O estado deve ser informado")
-    @ManyToOne
-    @JoinColumn(name = "estado", referencedColumnName = "id", nullable = false)
-    private Estado estado;
-
-    public Cidade() {
+    public Posicao() {
 
     }
 
@@ -74,24 +65,10 @@ public class Cidade implements Serializable {
         this.nome = nome;
     }
 
-    /**
-     * @return the estado
-     */
-    public Estado getEstado() {
-        return estado;
-    }
-
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -106,7 +83,7 @@ public class Cidade implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cidade other = (Cidade) obj;
+        final Posicao other = (Posicao) obj;
         return Objects.equals(this.id, other.id);
     }
 

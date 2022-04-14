@@ -1,6 +1,6 @@
 
-import br.edu.ifsul.pw2022_1_model.Cidade;
-import br.edu.ifsul.pw2022_1_model.Estado;
+import br.edu.ifsul.pw2022_1_model.Pessoa;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -13,17 +13,17 @@ import javax.persistence.Persistence;
  *
  * @author 20192PF.CC0170
  */
-public class TestePersistirCidade {
+public class TestePersistirPessoa {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ProjetoPW_2022PU");
         EntityManager em = emf.createEntityManager();
-        Cidade c = new Cidade();
-        c.setNome("Porto Alegre");
-        Estado e = em.find(Estado.class, 3);
-        c.setEstado(e);
+        Pessoa p = new Pessoa();
+        p.setNome("Alexander Medina");
+        p.setNascimento(Calendar.getInstance());
+        p.setCpf(("478.922.110-55"));
         em.getTransaction().begin();
-        em.persist(c);
+        em.persist(p);
         em.getTransaction().commit();
         em.close();
         emf.close();

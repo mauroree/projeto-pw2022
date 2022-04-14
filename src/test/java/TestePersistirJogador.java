@@ -1,6 +1,8 @@
 
-import br.edu.ifsul.pw2022_1_model.Cidade;
-import br.edu.ifsul.pw2022_1_model.Estado;
+import br.edu.ifsul.pw2022_1_model.Jogador;
+import br.edu.ifsul.pw2022_1_model.Posicao;
+import br.edu.ifsul.pw2022_1_model.Time;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -13,19 +15,24 @@ import javax.persistence.Persistence;
  *
  * @author 20192PF.CC0170
  */
-public class TestePersistirCidade {
+public class TestePersistirJogador {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ProjetoPW_2022PU");
         EntityManager em = emf.createEntityManager();
-        Cidade c = new Cidade();
-        c.setNome("Porto Alegre");
-        Estado e = em.find(Estado.class, 3);
-        c.setEstado(e);
+        Jogador j = new Jogador();
+        j.setNome("Taison");
+        j.setAltura(1.78);
+        j.setPeso(76.000);
+        j.setCpf("069.417.290-15");
+        j.setNascimento(Calendar.getInstance());
+        j.setPosicao(em.find(Posicao.class, 7));
+        j.setTime(em.find(Time.class, 1));
         em.getTransaction().begin();
-        em.persist(c);
+        em.persist(j);
         em.getTransaction().commit();
         em.close();
         emf.close();
     }
+
 }

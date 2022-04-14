@@ -92,5 +92,6 @@
       <version>2.7.9</version>
       <scope>provided</scope>
     </dependency>
-  </dependencies>        
+  </dependencies>
+    <name>ProjetoPW-2022</name>
 </project>
